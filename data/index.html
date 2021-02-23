@@ -1,0 +1,80 @@
+<!DOCTYPE HTML><html>
+<head>
+  <title>ESP IOT DASHBOARD</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topnav">
+    <h3>MONITOR DE CALIDAD</h3>
+  </div>
+  <div class="content">
+    <div id="reloj" style="font-size:20px; margin: 2rem 0;"></div>  
+    <div class="cards">
+      <div class="card card-temp">
+        <h4><i class="fas fa-thermometer-half"></i>TEMPERATURE</h4><div><p class="reading"><span id="temperature">%TEMPERATURE%</span>&deg;C</p></div>
+      </div>
+      <div class="card card-hum">
+        <h4><i class="fas fa-tint"></i>PH</h4><div><p class="reading"><span id="ph">%PH%</span>pH</p></div>
+      </div>
+      <div class="card card-ntu">
+        <h4><i class="fas fa-running"></i>TURBIDEZ</h4><div><p class="reading"><span id="turbidez">%TURBITY%</span>NTU</p></div>
+      </div>
+  </div>
+<script>
+  
+  function startTime(){
+    today=new Date();
+    h=today.getHours();
+    m=today.getMinutes();
+    s=today.getSeconds();
+    m=checkTime(m);
+    s=checkTime(s);
+    document.getElementById('reloj').innerHTML="Fecha Actual: "+h+":"+m+":"+s;
+    t=setTimeout('startTime()',500);
+  }
+  function checkTime(i){
+    if (i<10) {
+      i="0" + i;}return i;}
+    window.onload=function(){startTime();
+  }
+  
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("temperature").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/temperature", true);
+  xhttp.send();
+}, 1000 ) ;
+
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("ph").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/ph", true);
+  xhttp.send();
+}, 1000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("turbidez").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/turbidez", true);
+  xhttp.send();
+}, 1000 ) ;
+
+</script>
+</body>
+</html>
